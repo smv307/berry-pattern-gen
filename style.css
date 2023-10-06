@@ -1,0 +1,62 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* generted art */
+
+canvas {
+  display: block;
+  margin: auto;
+  border:  6px solid #dfdfdf;
+  border-radius: 3px;
+}
+
+/* site header */
+h1 {
+  font-size: 250%;
+  color: #2C363F;
+  font-family: "Concert One", cursive;
+}
+
+/* input label */
+
+#contents {
+  font-size: 100%;
+  color: #495158;
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: 0px;
+}
+
+#error-message {
+  font-size: 80%;
+  color: #b13939;
+  font-family: 'Outfit', sans-serif;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+/* input fields */
+
+input[type=number] {
+  border: 1.5px solid #DFDFDF;
+  border-radius: 3px;
+}
+
+input[type=button] {
+  border: none;
+  border-radius: 3px;
+  
+  background-color: #dfdfdf;;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-top: 25px;
+  padding-block: 10px;
+  padding-inline: 20px;
+  
+  font-family: 'Outfit', sans-serif;
+  font-size: 110%;
+  color: #ffffff;
+}
