@@ -6,19 +6,16 @@ let blueberryStemImg, strawberryBodyImg, strawberryStemImg, razzberryImg;
 let fruitData; // var for json data
 
 function preload() {
-  
   fruitData = loadJSON("fruitdata.json"); // get data from json
 
-  //import images
-  razzberryImg = loadImage("images/razzberry.png");
-  blueberryStemImg = loadImage("images/blueberry-stem.png");
-  strawberryBodyImg = loadImage("images/strawberry-body.png");
-  strawberryStemImg = loadImage("images/strawberry-stem.png");
+  //import imagesa
+  razzberryImg = loadImage("razzberry.png");
+  blueberryStemImg = loadImage("blueberry-stem.png");
+  strawberryBodyImg = loadImage("strawberry-body.png");
+  strawberryStemImg = loadImage("strawberry-stem.png");
 }
 
-
 // D A T A
-
 
 // get user input
 let yearInput;
@@ -26,15 +23,13 @@ let yearInput;
 function handleYearInput() {
   document.getElementById("error-message").style.visibility = "hidden";
   yearInput = document.getElementById("yearInput").valueAsNumber;
-  if(yearInput>2020 || yearInput<1971){
+  if (yearInput > 2020 || yearInput < 1971) {
     yearInput = null;
     document.getElementById("error-message").style.visibility = "visible";
-  };
+  }
 }
 
-
 // F R U I T S
-
 
 // parent class for fruit types
 class Fruit {
@@ -96,9 +91,7 @@ class Blueberry extends Fruit {
   }
 }
 
-
 // P A C K I N G
-
 
 const possibleFruits = [Razzberry, Strawberry, Strawberry, Blueberry];
 const currentFruits = []; // all fruit on canvas
@@ -130,9 +123,7 @@ function createFruit(className) {
   currentFruits.push(fruitInstance);
 }
 
-
-// C O N T R O L 
-
+// C O N T R O L
 
 // number specific fruits
 const currentRaspberries = [];
@@ -142,17 +133,13 @@ const currentBlueberries = [];
 // control frequency of a specific fruit obj
 function controlFruitFrequency(className, object, maxFruit) {
   className.push(object);
-  if (className.length > maxFruit) className.pop();
 }
 
-
 // S E T U P
-
 
 let finalize = false;
 
 function setup() {
-
   // check if finalize button clicked
   document.getElementById("finalizeButton").addEventListener("click", () => {
     finalize = true;
@@ -160,33 +147,34 @@ function setup() {
 
   // check if finalize button clicked
   document.getElementById("resetButton").addEventListener("click", () => {
-    location.reload()
+    location.reload();
   });
-  
-  // frameRate(13) 
+
+  // frameRate(13)
   createCanvas(500, 500);
   noStroke();
 }
 
+const ratio = 3500; // data is divided by...
 
 // I M P L E M E N T
 
 function draw() {
-  
   handleYearInput(); // check for and set user input
 
   if (!yearInput) {
     return; // Skip executing the rest of the code
   }
-  
+
   // get fruit amount data
 
-  let maxStrawberries = (floor(fruitData.strawberries[String(yearInput)]))/2500;
-  let maxBlueberries = (floor(fruitData.blueberries[String(yearInput)]))/2500;
-  let maxRaspberries = (floor(fruitData.raspberries[String(yearInput)]))/2500;
+  let maxStrawberries =
+    floor(fruitData.strawberries[String(yearInput)]) / ratio;
+  let maxBlueberries = floor(fruitData.blueberries[String(yearInput)]) / ratio;
+  let maxRaspberries = floor(fruitData.raspberries[String(yearInput)]) / ratio;
 
   background(255); // clear canvas every frame
-  
+
   // grow all current fruits
   for (let i of currentFruits) {
     if (checkForCollision(i)) {
@@ -199,14 +187,18 @@ function draw() {
   //draw new fruit instance
   let generatedFruit = random(possibleFruits);
   createFruit(generatedFruit);
-  
+
   // control amount of each fruit on canvas
   switch (generatedFruit) {
     case Razzberry:
       controlFruitFrequency(currentRaspberries, generatedFruit, maxRaspberries);
       break;
     case Strawberry:
-      controlFruitFrequency(currentStrawberries, generatedFruit, maxStrawberries);
+      controlFruitFrequency(
+        currentStrawberries,
+        generatedFruit,
+        maxStrawberries
+      );
       break;
     case Blueberry:
       controlFruitFrequency(currentBlueberries, generatedFruit, maxBlueberries);
@@ -214,6 +206,15 @@ function draw() {
   }
 
   // stop growth if
+  if (
+    (currentRaspberries.length >= maxRaspberries) &
+    (currentStrawberries.length >= maxStrawberries) &
+    (currentBlueberries.length >= maxBlueberries)
+  ) {
+    noLoop();
+    console.log("done yay");
+  }
+
   if (finalize == true) {
     noLoop();
   }
