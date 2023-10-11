@@ -20,16 +20,22 @@
 
   </head>
   <body>
+    
     <main>
       <h1>Berries In the United States</h1>
-      <div id = "contents" >
-        <label for = "year">A visualizaion of the ratio of berries harvested in: </label>
-        <input type = "number" id = "yearInput" >
+      <div class = "text">
+        <label for = "year">a visualizaion of the ratio of berries harvested in: </label>
+        <input type = "number" min="1971" max="2020" id = "yearInput" >
        </div>
-        <p id = "error-message">Please enter a year between 1971 and 2020</p>
+        <p id = "error-message">please enter a year between 1971 and 2020</p>
     </main>
+    
     <script src="sketch.js"></script>
-    <input type = "button" id="finalizeButton" value = "DONE">
+    
+    <input type = "button" id="finalizeButton" value = "STOP">
     <input type = "button" id="resetButton" value = "RESET">
+    
+    <p id ="data-source" class = "text"> DATA FROM DATA.UN.ORG </p>
+    </main>
   </body>
 </html>
