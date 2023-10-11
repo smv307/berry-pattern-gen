@@ -2,7 +2,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color:#FFFFFF;
+  background-color: #FFFFFF;
   text-align: center;
 }
 
@@ -11,7 +11,7 @@ body {
 canvas {
   display: block;
   margin: auto;
-  border:  6px solid #dfdfdf;
+  border: 6px solid #dfdfdf;
   border-radius: 3px;
 }
 
@@ -24,41 +24,48 @@ h1 {
 
 /* input label */
 
-#contents {
+.text {
   font-size: 100%;
   color: #495158;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   margin-bottom: 0px;
 }
 
 #error-message {
   font-size: 80%;
   color: #b13939;
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   margin-top: 0px;
   margin-bottom: 5px;
 }
 
+#data-source {
+  background-color: #E5E5E5;
+  margin-top: 20px;
+  margin-inline: auto;
+  width: 520px;
+}
+
 /* input fields */
 
-input[type=number] {
+input[type="number"] {
   border: 1.5px solid #DFDFDF;
   border-radius: 3px;
 }
 
-input[type=button] {
+input[type="button"] {
   border: none;
   border-radius: 3px;
-  
-  background-color: #dfdfdf;;
+
+  background-color: #dfdfdf;
   margin-right: 20px;
   margin-left: 20px;
-  margin-top: 25px;
   margin-bottom: 20px;
+  margin-top: 25px;
   padding-block: 10px;
   padding-inline: 20px;
-  
-  font-family: 'Outfit', sans-serif;
+
+  font-family: "Outfit", sans-serif;
   font-size: 110%;
   color: #ffffff;
 }
