@@ -131,7 +131,7 @@ const currentStrawberries = [];
 const currentBlueberries = [];
 
 // control frequency of a specific fruit obj
-function controlFruitFrequency(className, object, maxFruit) {
+function controlFruitFrequency(className, object) {
   className.push(object);
 }
 
@@ -140,6 +140,7 @@ function controlFruitFrequency(className, object, maxFruit) {
 let finalize = false;
 
 function setup() {
+  frameRate(60)
   // check if finalize button clicked
   document.getElementById("finalizeButton").addEventListener("click", () => {
     finalize = true;
@@ -151,11 +152,11 @@ function setup() {
   });
 
   // frameRate(13)
-  createCanvas(500, 500);
+  createCanvas(1050, 675);
   noStroke();
 }
 
-const ratio = 3500; // data is divided by...
+const ratio = 2000; // data is divided by...
 
 // I M P L E M E N T
 
@@ -191,17 +192,13 @@ function draw() {
   // control amount of each fruit on canvas
   switch (generatedFruit) {
     case Razzberry:
-      controlFruitFrequency(currentRaspberries, generatedFruit, maxRaspberries);
+      controlFruitFrequency(currentRaspberries, generatedFruit);
       break;
     case Strawberry:
-      controlFruitFrequency(
-        currentStrawberries,
-        generatedFruit,
-        maxStrawberries
-      );
+      controlFruitFrequency(currentStrawberries, generatedFruit,);
       break;
     case Blueberry:
-      controlFruitFrequency(currentBlueberries, generatedFruit, maxBlueberries);
+      controlFruitFrequency(currentBlueberries, generatedFruit);
       break;
   }
 
