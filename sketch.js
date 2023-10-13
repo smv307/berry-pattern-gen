@@ -170,9 +170,9 @@ function draw() {
   // get fruit amount data
 
   let maxStrawberries =
-    floor(fruitData.strawberries[String(yearInput)]) / ratio;
-  let maxBlueberries = floor(fruitData.blueberries[String(yearInput)]) / ratio;
-  let maxRaspberries = floor(fruitData.raspberries[String(yearInput)]) / ratio;
+    floor(fruitData.strawberries[String(yearInput)] / ratio);
+  let maxBlueberries = floor(fruitData.blueberries[String(yearInput)] / ratio);
+  let maxRaspberries = floor(fruitData.raspberries[String(yearInput)] / ratio);
 
   background(255); // clear canvas every frame
 
