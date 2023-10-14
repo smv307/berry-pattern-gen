@@ -15,6 +15,8 @@ function preload() {
   strawberryStemImg = loadImage("strawberry-stem.png");
 }
 
+//--------------------------------------------------------
+
 // D A T A
 
 // get user input
@@ -28,6 +30,8 @@ function handleYearInput() {
     document.getElementById("error-message").style.visibility = "visible";
   }
 }
+
+//--------------------------------------------------------
 
 // F R U I T S
 
@@ -71,7 +75,7 @@ class Strawberry extends Fruit {
   }
 }
 
-// blueberryfruit
+// blueberry fruit
 class Blueberry extends Fruit {
   constructor(x, y, size) {
     super(x, y, size);
@@ -91,11 +95,29 @@ class Blueberry extends Fruit {
   }
 }
 
+//--------------------------------------------------------
+
 // P A C K I N G
 
 const possibleFruits = [Razzberry, Strawberry, Strawberry, Blueberry];
 const currentFruits = []; // all fruit on canvas
 const minFruitSize = 20; // size at generation
+let fruitInstance;
+
+// amount of each fruit on canvas
+let currentRaspberriesCount = 0;
+let currentStrawberriesCount = 0;
+let currentBlueberriesCount = 0;
+
+// put fruit obj on canvas
+function fruitToCanvas(className) {
+    fruitInstance = new className(
+    random(0, width),
+    random(0, height),
+    minFruitSize
+  );
+}
+
 
 // check for collision between two fruits
 function checkForCollision(fruit) {
@@ -103,8 +125,24 @@ function checkForCollision(fruit) {
     let fruit2 = currentFruits[i]; // fruit checking with
     let distance = dist(fruit.x, fruit.y, fruit2.x, fruit2.y);
     if (distance !== 0 && distance <= fruit.size + fruit2.size) {
-      if (fruit.size === minFruitSize) {
-        currentFruits.pop(); // remove non growing fruits
+      if (fruit != fruit2){
+        if (fruit.size === minFruitSize) {
+
+          currentFruits.pop(); // remove fruit from array of fruits on canvas
+
+          // minus one from respective count
+          switch (fruit) {
+            case Razzberry:
+              currentRaspberriesCount--;
+              break;
+            case Strawberry:
+              currentStrawberriesCount--;
+              break;
+            case Blueberry:
+              currentBlueberriesCount--;
+              break;
+          }
+        }
       }
       return true;
     }
@@ -112,35 +150,15 @@ function checkForCollision(fruit) {
   return false;
 }
 
-// create new fruit obj to put on canvas
-function createFruit(className) {
-  let fruitInstance = new className(
-    random(0, width),
-    random(0, height),
-    minFruitSize
-  );
 
-  currentFruits.push(fruitInstance);
-}
-
-// C O N T R O L
-
-// number specific fruits
-const currentRaspberries = [];
-const currentStrawberries = [];
-const currentBlueberries = [];
-
-// control frequency of a specific fruit obj
-function controlFruitFrequency(className, object) {
-  className.push(object);
-}
+//--------------------------------------------------------
 
 // S E T U P
 
 let finalize = false;
 
 function setup() {
-  frameRate(60)
+  frameRate(60);
   // check if finalize button clicked
   document.getElementById("finalizeButton").addEventListener("click", () => {
     finalize = true;
@@ -156,7 +174,7 @@ function setup() {
   noStroke();
 }
 
-const ratio = 2000; // data is divided by...
+//--------------------------------------------------------
 
 // I M P L E M E N T
 
@@ -169,14 +187,15 @@ function draw() {
 
   // get fruit amount data
 
-  let maxStrawberries =
-    floor(fruitData.strawberries[String(yearInput)] / ratio);
+  let ratio = 1000 - Math.exp(yearInput - 2021); // data is divided by...
+
+  let maxStrawberries = floor(fruitData.strawberries[String(yearInput)] / ratio);
   let maxBlueberries = floor(fruitData.blueberries[String(yearInput)] / ratio);
   let maxRaspberries = floor(fruitData.raspberries[String(yearInput)] / ratio);
 
   background(255); // clear canvas every frame
 
-  // grow all current fruits
+      // grow all current fruits
   for (let i of currentFruits) {
     if (checkForCollision(i)) {
       i.draw();
@@ -184,32 +203,43 @@ function draw() {
       i.grow();
     }
   }
+  
+  // choose a random fruit
+  let randomFruit = random(possibleFruits);
 
-  //draw new fruit instance
-  let generatedFruit = random(possibleFruits);
-  createFruit(generatedFruit);
-
-  // control amount of each fruit on canvas
-  switch (generatedFruit) {
+  // add a new object of the chosen fruit to canvas
+  switch (randomFruit) {
     case Razzberry:
-      controlFruitFrequency(currentRaspberries, generatedFruit);
+      if (currentRaspberriesCount < maxRaspberries) {
+        currentRaspberriesCount++;
+        fruitToCanvas(randomFruit);
+      }
       break;
     case Strawberry:
-      controlFruitFrequency(currentStrawberries, generatedFruit,);
+      if (currentStrawberriesCount < maxStrawberries) {
+        currentStrawberriesCount++;
+        fruitToCanvas(randomFruit);
+      }
       break;
     case Blueberry:
-      controlFruitFrequency(currentBlueberries, generatedFruit);
+      if (currentBlueberriesCount < maxBlueberries) {
+        currentBlueberriesCount++;
+        fruitToCanvas(randomFruit);
+      }
       break;
   }
 
+  currentFruits.push(fruitInstance); // add newly generated fruit to array of fruits on canvas
+  
+  
+  
   // stop growth if
   if (
-    (currentRaspberries.length >= maxRaspberries) &
-    (currentStrawberries.length >= maxStrawberries) &
-    (currentBlueberries.length >= maxBlueberries)
+    (currentRaspberriesCount == maxRaspberries) &
+    (currentStrawberriesCount == maxStrawberries) &
+    (currentBlueberriesCount == maxBlueberries)
   ) {
     noLoop();
-    console.log("done yay");
   }
 
   if (finalize == true) {
