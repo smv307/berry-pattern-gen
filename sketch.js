@@ -111,13 +111,12 @@ let currentBlueberriesCount = 0;
 
 // put fruit obj on canvas
 function fruitToCanvas(className) {
-    fruitInstance = new className(
+  fruitInstance = new className(
     random(0, width),
     random(0, height),
     minFruitSize
   );
 }
-
 
 // check for collision between two fruits
 function checkForCollision(fruit) {
@@ -125,9 +124,8 @@ function checkForCollision(fruit) {
     let fruit2 = currentFruits[i]; // fruit checking with
     let distance = dist(fruit.x, fruit.y, fruit2.x, fruit2.y);
     if (distance !== 0 && distance <= fruit.size + fruit2.size) {
-      if (fruit != fruit2){
+      if (fruit != fruit2) {
         if (fruit.size === minFruitSize) {
-
           currentFruits.pop(); // remove fruit from array of fruits on canvas
 
           // minus one from respective count
@@ -149,7 +147,6 @@ function checkForCollision(fruit) {
   }
   return false;
 }
-
 
 //--------------------------------------------------------
 
@@ -189,13 +186,15 @@ function draw() {
 
   let ratio = 1000 - Math.exp(yearInput - 2021); // data is divided by...
 
-  let maxStrawberries = floor(fruitData.strawberries[String(yearInput)] / ratio);
+  let maxStrawberries = floor(
+    fruitData.strawberries[String(yearInput)] / ratio
+  );
   let maxBlueberries = floor(fruitData.blueberries[String(yearInput)] / ratio);
   let maxRaspberries = floor(fruitData.raspberries[String(yearInput)] / ratio);
 
   background(255); // clear canvas every frame
 
-      // grow all current fruits
+  // grow all current fruits
   for (let i of currentFruits) {
     if (checkForCollision(i)) {
       i.draw();
@@ -203,7 +202,7 @@ function draw() {
       i.grow();
     }
   }
-  
+
   // choose a random fruit
   let randomFruit = random(possibleFruits);
 
@@ -230,9 +229,7 @@ function draw() {
   }
 
   currentFruits.push(fruitInstance); // add newly generated fruit to array of fruits on canvas
-  
-  
-  
+
   // stop growth if
   if (
     (currentRaspberriesCount == maxRaspberries) &
