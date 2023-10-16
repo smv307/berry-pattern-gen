@@ -132,7 +132,6 @@ function checkForCollision(fruit) {
           switch (fruit.constructor) {
             case Razzberry:
               currentRaspberriesCount--;
-              console.log('test');
               break;
             case Strawberry:
               currentStrawberriesCount--;
@@ -236,14 +235,9 @@ function draw() {
   if (
     (currentRaspberriesCount == maxRaspberries) &
     (currentStrawberriesCount == maxStrawberries) &
-    (currentBlueberriesCount == maxBlueberries)
+    (currentBlueberriesCount == maxBlueberries) || finalize == true || frameCount > 1000
   ) {
     noLoop();
   }
-
-  if (finalize == true || frameCount > 1000) {
-    noLoop();
-  }
-  
   console.log(`current: ${currentBlueberriesCount} max: ${maxBlueberries}`) // for testing
 }
