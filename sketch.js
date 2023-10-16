@@ -1,7 +1,7 @@
 // P R E L O A D
 
 // define image vars
-let blueberryStemImg, strawberryBodyImg, strawberryStemImg, raspberryImg;
+let blueberryStemImg, strawberryBodyImg, strawberryStemImg, razzberryImg;
 
 let fruitData; // var for json data
 
@@ -9,7 +9,7 @@ function preload() {
   fruitData = loadJSON("fruitdata.json"); // get data from json
 
   //import imagesa
-  raspberryImg = loadImage("razzberry.png");
+  razzberryImg = loadImage("razzberry.png");
   blueberryStemImg = loadImage("blueberry-stem.png");
   strawberryBodyImg = loadImage("strawberry-body.png");
   strawberryStemImg = loadImage("strawberry-stem.png");
@@ -48,13 +48,13 @@ class Fruit {
   }
 }
 
-// raspberry fruit
-class Raspberry extends Fruit {
+// razzberry fruit
+class Razzberry extends Fruit {
   constructor(x, y, size) {
     super(x, y, size);
   }
   draw() {
-    image(raspberryImg, this.x, this.y, this.size, this.size);
+    image(razzberryImg, this.x, this.y, this.size, this.size);
   }
 }
 
@@ -97,9 +97,9 @@ class Blueberry extends Fruit {
 
 //--------------------------------------------------------
 
-// F U N C T I O N S
+// P A C K I N G
 
-const possibleFruits = [Raspberry, Strawberry, Strawberry, Blueberry];
+const possibleFruits = [Razzberry, Strawberry, Strawberry, Blueberry];
 const currentFruits = []; // all fruit on canvas
 const minFruitSize = 20; // size at generation
 let fruitInstance;
@@ -110,15 +110,12 @@ let currentStrawberriesCount = 0;
 let currentBlueberriesCount = 0;
 
 // put fruit obj on canvas
-function fruitToCanvas(fruitClass, currentCount, maxCount) {
-  if (currentCount < maxCount) {
-    currentCount++;
-    fruitInstance = new fruitClass(
-      random(0, width),
-      random(0, height),
-      minFruitSize
-    );
-  }
+function fruitToCanvas(className) {
+  fruitInstance = new className(
+    random(0, width),
+    random(0, height),
+    minFruitSize
+  );
 }
 
 // check for collision between two fruits
@@ -127,14 +124,15 @@ function checkForCollision(fruit) {
     let fruit2 = currentFruits[i]; // fruit checking with
     let distance = dist(fruit.x, fruit.y, fruit2.x, fruit2.y);
     if (distance !== 0 && distance <= fruit.size + fruit2.size) {
-      if (fruit != fruit2) {
+      if (fruit !== fruit2) {
         if (fruit.size === minFruitSize) {
-          currentFruits.pop(); // remove fruit from array of fruits on canvas
+          currentFruits.splice(currentFruits.indexOf(fruit), 1); // Remove current fruit from array
 
-          // minus one from respective count
-          switch (fruit) {
-            case Raspberry:
+          // Minus one from respective count
+          switch (fruit.constructor) {
+            case Razzberry:
               currentRaspberriesCount--;
+              console.log('test');
               break;
             case Strawberry:
               currentStrawberriesCount--;
@@ -150,6 +148,7 @@ function checkForCollision(fruit) {
   }
   return false;
 }
+
 
 //--------------------------------------------------------
 
@@ -176,7 +175,7 @@ function setup() {
 
 //--------------------------------------------------------
 
-// D R A W
+// I M P L E M E N T
 
 function draw() {
   handleYearInput(); // check for and set user input
@@ -187,7 +186,7 @@ function draw() {
 
   // get fruit amount data
 
-  let ratio = 1000 - Math.exp(yearInput - 2021); // data is divided by...
+  let ratio = 4000 - Math.exp(yearInput - 2021); // data is divided by...
 
   let maxStrawberries = floor(
     fruitData.strawberries[String(yearInput)] / ratio
@@ -211,14 +210,23 @@ function draw() {
 
   // add a new object of the chosen fruit to canvas
   switch (randomFruit) {
-    case Raspberry:
-      fruitToCanvas(Raspberry, currentRaspberriesCount,  maxRaspberries)
+    case Razzberry:
+      if (currentRaspberriesCount < maxRaspberries) {
+        currentRaspberriesCount++;
+        fruitToCanvas(randomFruit);
+      }
       break;
     case Strawberry:
-      fruitToCanvas(Strawberry, currentStrawberriesCount,  maxStrawberries)
+      if (currentStrawberriesCount < maxStrawberries) {
+        currentStrawberriesCount++;
+        fruitToCanvas(randomFruit);
+      }
       break;
     case Blueberry:
-      fruitToCanvas(Blueberry, currentBlueberriesCount,  maxBlueberries)
+      if (currentBlueberriesCount < maxBlueberries) {
+        currentBlueberriesCount++;
+        fruitToCanvas(randomFruit);
+      }
       break;
   }
 
@@ -228,9 +236,14 @@ function draw() {
   if (
     (currentRaspberriesCount == maxRaspberries) &
     (currentStrawberriesCount == maxStrawberries) &
-    (currentBlueberriesCount == maxBlueberries) || finalize == true
+    (currentBlueberriesCount == maxBlueberries)
   ) {
     noLoop();
   }
 
+  if (finalize == true || frameCount > 1000) {
+    noLoop();
+  }
+  
+  console.log(`current: ${currentBlueberriesCount} max: ${maxBlueberries}`) // for testing
 }
